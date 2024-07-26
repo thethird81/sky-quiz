@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "168999506599",
+    "project_id": "skyquiz-60d28",
+    "storage_bucket": "skyquiz-60d28.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:168999506599:android:ac769e7fd2f96404458182",
+        "android_client_info": {
+          "package_name": "com.example.sky_quiz"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBX3_7DM3kOHAMcSIpag-FKU0d81zg2rqM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:168999506599:android:008a4b1e0ff136e6458182",
+        "android_client_info": {
+          "package_name": "com.example.sky_quiz"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBX3_7DM3kOHAMcSIpag-FKU0d81zg2rqM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

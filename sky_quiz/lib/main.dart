@@ -1,5 +1,7 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:sky_quiz/firebase_options.dart';
 import 'home.dart';
 import 'local_notifications.dart';
 
@@ -11,6 +13,7 @@ FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await LocalNotifications.init();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
 //  handle in terminated state
   var initialNotification =
