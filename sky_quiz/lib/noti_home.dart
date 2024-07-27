@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 
 import 'local_notifications.dart';
 
-class Homepage extends StatefulWidget {
-  const Homepage({super.key});
+class NotiHomePage extends StatefulWidget {
+  const NotiHomePage({super.key});
 
   @override
-  State<Homepage> createState() => _HomepageState();
+  State<NotiHomePage> createState() => _HomepageState();
 }
 
-class _HomepageState extends State<Homepage> {
+class _HomepageState extends State<NotiHomePage> {
   @override
   void initState() {
     listenToNotifications();
@@ -27,8 +27,6 @@ class _HomepageState extends State<Homepage> {
     });
 
     LocalNotifications.checkAppLaunch();
-
-
   }
 
   @override

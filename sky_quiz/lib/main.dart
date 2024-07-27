@@ -2,9 +2,9 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:sky_quiz/firebase_options.dart';
-import 'home.dart';
+import 'noti_home.dart';
 import 'local_notifications.dart';
-
+import 'pages/home.dart';
 import 'another_page.dart';
 
 final navigatorKey = GlobalKey<NavigatorState>();
@@ -59,8 +59,9 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       routes: {
-        '/': (context) => const Homepage(),
+        '/': (context) => const HomePage(),
         '/another': (context) => const AnotherPage(),
+        '/noti_home': (context) => const NotiHomePage(),
       },
     );
   }
