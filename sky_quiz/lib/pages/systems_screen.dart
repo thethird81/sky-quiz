@@ -1,18 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:sky_quiz/pages/quiz_home.dart';
-import 'package:sky_quiz/pages/systems_screen.dart';
 
-class TopicsScreen extends StatelessWidget {
-  final List<String> aircraftType = [
-    'B777',
-    'B787',
-    'B737',
-    'A350',
-    'B767',
-    'Q400'
+class SystemsScreen extends StatelessWidget {
+  final String aircraftType;
+  final List<String> systems = [
+    'Engine',
+    'Oxygen',
+    'Warning system',
+    'Lighting',
+    'Landing Gear',
+    'Pneumatics',
+    'Aircraft General',
+    'Anti Ice, Rain Protection',
+    'Hydraulics',
+    'Fuel System',
+    'Flight Controls',
+    'Fire Protection',
+    'Electrical',
+    'Avionics',
+    'APU',
   ];
-
-  TopicsScreen({super.key});
+  SystemsScreen({super.key, required this.aircraftType});
 
   @override
   Widget build(BuildContext context) {
@@ -29,12 +37,13 @@ class TopicsScreen extends StatelessWidget {
             mainAxisSpacing: 12,
             crossAxisCount: 2,
             children: [
-              for (var i in aircraftType)
+              for (var i in systems)
                 InkWell(
                   onTap: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (context) => SystemsScreen(aircraftType: i),
+                        builder: (context) =>
+                            QuizHome(aircraftType: aircraftType, system: i),
                       ),
                     );
                     ;
@@ -48,7 +57,7 @@ class TopicsScreen extends StatelessWidget {
                       child: Text(
                         i,
                         style: TextStyle(
-                            fontSize: 32, fontWeight: FontWeight.bold),
+                            fontSize: 16, fontWeight: FontWeight.bold),
                       )),
                 )
             ],

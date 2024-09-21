@@ -6,8 +6,9 @@ import 'package:sky_quiz/services/firestore.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class QuizHome extends StatefulWidget {
-  final String topic;
-  const QuizHome({super.key, required this.topic});
+  final String aircraftType;
+  final String system;
+  const QuizHome({super.key, required this.aircraftType, required this.system});
   @override
   _QuizAppState createState() => _QuizAppState();
 }
@@ -26,7 +27,8 @@ class _QuizAppState extends State<QuizHome> {
   Future<void> fetchQuestions() async {
     final QuerySnapshot snapshot = await FirebaseFirestore.instance
         .collection('questions')
-        .where('topic', isEqualTo: widget.topic)
+        .where('system', isEqualTo: widget.system)
+        .where('aircraftType', isEqualTo: widget.aircraftType)
         .get();
 
     setState(() {
@@ -114,7 +116,7 @@ class _QuizAppState extends State<QuizHome> {
         iconTheme: const IconThemeData(color: Colors.white),
         backgroundColor: Colors.blueAccent,
         centerTitle: true,
-        title: Text(widget.topic,
+        title: Text(widget.aircraftType,
             style: GoogleFonts.chicle(
               textStyle: const TextStyle(
                   color: Colors.white,
