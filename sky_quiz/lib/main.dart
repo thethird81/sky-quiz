@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:sky_quiz/firebase_options.dart';
+import 'package:sky_quiz/pages/topics_screen.dart';
 import 'noti_home.dart';
 import 'local_notifications.dart';
 import 'pages/quiz_home.dart';
@@ -44,7 +45,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       routes: {
-        '/': (context) => QuizHome(),
+        '/': (context) => TopicsScreen(),
         '/another': (context) => GetUserName('CSFDtxaACF6ElFxnMvpz'),
         '/noti_home': (context) => const NotiHomePage(),
       },
