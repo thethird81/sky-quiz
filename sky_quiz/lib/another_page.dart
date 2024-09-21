@@ -1,15 +1,44 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:sky_quiz/models/quiz_model.dart';
 
-class AnotherPage extends StatelessWidget {
-  const AnotherPage({super.key});
+class GetUserName extends StatelessWidget {
+  final String documentId;
+  late List<Question> questions = [];
+
+  GetUserName(this.documentId);
 
   @override
   Widget build(BuildContext context) {
-    final data = ModalRoute.of(context)!.settings.arguments;
+    CollectionReference users =
+        FirebaseFirestore.instance.collection('questions');
 
-    return Scaffold(
-      appBar: AppBar(title: Text("Another Page")),
-      body: Center(child: Text(data.toString())),
+    return FutureBuilder<QuerySnapshot>(
+      future: users.get(),
+      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+        if (snapshot.hasError) {
+          return Text("Something went wrong");
+        }
+
+        if (!snapshot.hasData) {
+          return Text("No question available");
+        }
+
+        if (snapshot.connectionState == ConnectionState.done) {
+          questions = snapshot.data!.docs.map((doc) {
+            final List<String> options = List.from(doc['option'] as List);
+            return Question(
+              question: doc['question'].toString(),
+              option: options,
+              correctAnswer: doc['correctAnswer'].toString(),
+            );
+          }).toList();
+          //Map<String, dynamic> data = snapshot.data as Map<String, dynamic>;
+          return Text(questions[0].question);
+        }
+
+        return Text("loading");
+      },
     );
   }
 }
