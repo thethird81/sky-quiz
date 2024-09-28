@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:sky_quiz/pages/quiz_home.dart';
 import 'package:sky_quiz/pages/systems_screen.dart';
 
 class TopicsScreen extends StatelessWidget {

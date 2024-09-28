@@ -6,7 +6,14 @@ import 'package:sky_quiz/flash_card/ques_ans_file.dart';
 import 'package:sky_quiz/flash_card/reusable_card.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+  final String aircraftType;
+  final String system;
+  final String difficulty;
+  const HomePage(
+      {super.key,
+      required this.aircraftType,
+      required this.system,
+      required this.difficulty});
 
   @override
   _HomePageState createState() => _HomePageState();
@@ -22,14 +29,18 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
         backgroundColor: Colors.grey.shade100,
         appBar: AppBar(
-            centerTitle: true,
-            title: Text("Flashcards App", style: TextStyle(fontSize: 30)),
-            backgroundColor: mainColor,
-            toolbarHeight: 80,
-            elevation: 5,
-            shadowColor: mainColor,
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20))),
+          centerTitle: true,
+          title: Text(
+              widget.aircraftType +
+                  '/' +
+                  widget.system +
+                  '/' +
+                  widget.difficulty,
+              style: TextStyle(fontSize: 30)),
+          backgroundColor: Colors.blueAccent,
+          toolbarHeight: 80,
+          elevation: 5,
+        ),
         body: Center(
             child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -40,7 +51,8 @@ class _HomePageState extends State<HomePage> {
                 padding: const EdgeInsets.all(10.0),
                 child: LinearProgressIndicator(
                   backgroundColor: Colors.white,
-                  valueColor: AlwaysStoppedAnimation(Colors.pinkAccent),
+                  valueColor: AlwaysStoppedAnimation(
+                      Color.fromARGB(255, 153, 181, 230)),
                   minHeight: 5,
                   value: _initial,
                 ),
@@ -68,7 +80,7 @@ class _HomePageState extends State<HomePage> {
                         icon: Icon(FontAwesomeIcons.handPointLeft, size: 30),
                         label: Text(""),
                         style: ElevatedButton.styleFrom(
-                            backgroundColor: mainColor,
+                            backgroundColor: Color.fromARGB(255, 153, 181, 230),
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10)),
                             padding: EdgeInsets.only(
@@ -81,7 +93,7 @@ class _HomePageState extends State<HomePage> {
                         icon: Icon(FontAwesomeIcons.handPointRight, size: 30),
                         label: Text(""),
                         style: ElevatedButton.styleFrom(
-                            backgroundColor: mainColor,
+                            backgroundColor: Color.fromARGB(255, 153, 181, 230),
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10)),
                             padding: EdgeInsets.only(

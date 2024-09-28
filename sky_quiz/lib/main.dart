@@ -1,11 +1,13 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:provider/provider.dart';
 import 'package:sky_quiz/firebase_options.dart';
-import 'package:sky_quiz/pages/topics_screen.dart';
+import 'package:sky_quiz/helper/data_provider.dart';
+import 'package:sky_quiz/pages/dropdown_home.dart';
+import 'package:sky_quiz/pages/home.dart';
 import 'noti_home.dart';
 import 'local_notifications.dart';
-import 'pages/quiz_home.dart';
 import 'another_page.dart';
 
 final navigatorKey = GlobalKey<NavigatorState>();
@@ -37,19 +39,22 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      navigatorKey: navigatorKey,
-      title: 'Flutter Demo',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
-        useMaterial3: true,
+    return ChangeNotifierProvider(
+      create: (context) => DataProvider(),
+      child: MaterialApp(
+        navigatorKey: navigatorKey,
+        title: 'Flutter Demo',
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
+          useMaterial3: true,
+        ),
+        routes: {
+          '/': (context) => DropdownHome(),
+          '/another': (context) => GetUserName('CSFDtxaACF6ElFxnMvpz'),
+          '/noti_home': (context) => const NotiHomePage(),
+        },
       ),
-      routes: {
-        '/': (context) => TopicsScreen(),
-        '/another': (context) => GetUserName('CSFDtxaACF6ElFxnMvpz'),
-        '/noti_home': (context) => const NotiHomePage(),
-      },
     );
   }
 }

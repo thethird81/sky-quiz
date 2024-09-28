@@ -30,7 +30,8 @@ class GetUserName extends StatelessWidget {
             return Question(
               question: doc['question'].toString(),
               option: options,
-              correctAnswer: doc['correctAnswer'].toString(),
+              correctAnswer: doc['correctAnswer'],
+              explanation: doc['explanation'].toString(),
             );
           }).toList();
           //Map<String, dynamic> data = snapshot.data as Map<String, dynamic>;

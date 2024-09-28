@@ -1,0 +1,267 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
+import 'package:sky_quiz/models/quiz_model.dart';
+import 'package:sky_quiz/pages/dashboard.dart';
+import 'package:google_fonts/google_fonts.dart';
+
+class QuizScreen extends StatefulWidget {
+  final String aircraftType;
+  final String system;
+  final String difficulty;
+  const QuizScreen(
+      {super.key,
+      required this.aircraftType,
+      required this.system,
+      required this.difficulty});
+  @override
+  _QuizScreenState createState() => _QuizScreenState();
+}
+
+class _QuizScreenState extends State<QuizScreen> {
+  List<Question> _questions = [];
+  // List<Question> _questions = [
+  //   Question(
+  //     question: 'What is the capital of France?',
+  //     option: ['Berlin', 'Madrid', 'Paris', 'Lisbon'],
+  //     correctAnswer: 2,
+  //     explanation: 'Paris is the capital city of France.',
+  //   ),
+  //   Question(
+  //     question: 'What is 5 + 3?',
+  //     option: ['5', '8', '10', '15'],
+  //     correctAnswer: 1,
+  //     explanation: '5 + 3 equals 8.',
+  //   ),
+  //   Question(
+  //     question: 'What is the boiling point of water?',
+  //     option: ['90°C', '100°C', '80°C', '70°C'],
+  //     correctAnswer: 1,
+  //     explanation: 'Water boils at 100°C at sea level.',
+  //   ),
+  // ];
+
+  int _currentQuestionIndex = 0;
+  int _score = 0;
+  List<int?> _selectedAnswers = [];
+
+  @override
+  void initState() {
+    super.initState();
+
+    fetchQuestions();
+  }
+
+  Future<void> fetchQuestions() async {
+    final QuerySnapshot snapshot = await FirebaseFirestore.instance
+        .collection('questions')
+        .where('system', isEqualTo: widget.system)
+        .where('aircraftType', isEqualTo: widget.aircraftType)
+        .get();
+
+    setState(() {
+      _questions = snapshot.docs.map((doc) {
+        final List<String> options = List.from(doc['options'] as List);
+        return Question(
+          question: doc['question'].toString(),
+          option: options,
+          correctAnswer: doc['correctAnswer'],
+          explanation: doc['explanation'].toString(),
+        );
+      }).toList();
+      _selectedAnswers = List<int?>.filled(_questions.length, null);
+    });
+  }
+
+  void _nextQuestion() {
+    setState(() {
+      if (_currentQuestionIndex < _questions.length - 1) {
+        _currentQuestionIndex++;
+      }
+    });
+  }
+
+  void _prevQuestion() {
+    setState(() {
+      if (_currentQuestionIndex > 0) {
+        _currentQuestionIndex--;
+      }
+    });
+  }
+
+  void _submitQuiz() {
+    List<int> unansweredQuestions = [];
+    for (int i = 0; i < _questions.length; i++) {
+      if (_selectedAnswers[i] == null) {
+        unansweredQuestions.add(i + 1); // Adding 1 to make it 1-based index
+      }
+    }
+
+    if (unansweredQuestions.isNotEmpty) {
+      showDialog(
+        context: context,
+        builder: (ctx) => AlertDialog(
+          title: Text('Unanswered Questions'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text('Please answer the following questions:'),
+              Text(unansweredQuestions.join(', ')),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(ctx).pop();
+                _goToFirstUnansweredQuestion(unansweredQuestions);
+              },
+              child: Text('Go to First Unanswered'),
+            ),
+          ],
+        ),
+      );
+    } else {
+      int score = 0;
+      for (int i = 0; i < _questions.length; i++) {
+        if (_selectedAnswers[i] == _questions[i].correctAnswer) {
+          score++;
+        }
+      }
+      showDialog(
+        context: context,
+        builder: (ctx) => AlertDialog(
+          title: Text('Quiz Completed'),
+          content: Text('Your score is $score/${_questions.length}'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(ctx).pop();
+              },
+              child: Text('OK'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(ctx).pop();
+                _resetQuiz();
+              },
+              child: Text('Reset Quiz'),
+            ),
+          ],
+        ),
+      );
+    }
+  }
+
+  void _goToFirstUnansweredQuestion(List<int> unansweredQuestions) {
+    setState(() {
+      _currentQuestionIndex = unansweredQuestions.first -
+          1; // Subtracting 1 to make it 0-based index
+    });
+  }
+
+  void _resetQuiz() {
+    setState(() {
+      _currentQuestionIndex = 0;
+      _score = 0;
+      _selectedAnswers = List<int?>.filled(_questions.length, null);
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (!_questions.isEmpty) {
+      final question = _questions[_currentQuestionIndex];
+      return Scaffold(
+        appBar: AppBar(
+          title: Text('Quiz App'),
+          backgroundColor: Colors.blueAccent,
+          shadowColor: const Color.fromARGB(255, 9, 0, 2),
+          elevation: 7,
+        ),
+        body: Container(
+          alignment: Alignment.center,
+          padding: EdgeInsets.only(left: 20, right: 20, top: 50),
+          decoration: BoxDecoration(
+              color: const Color.fromARGB(255, 195, 207, 228),
+              borderRadius: BorderRadius.only(topLeft: Radius.circular(100))),
+          child: Column(
+            children: [
+              Text(
+                (_currentQuestionIndex + 1).toString() +
+                    '/' +
+                    _questions.length.toString(),
+                style: TextStyle(fontWeight: FontWeight.w400, fontSize: 20),
+              ),
+              Container(
+                padding: EdgeInsets.all(5),
+                decoration: BoxDecoration(
+                    color: Colors.transparent,
+                    borderRadius: BorderRadius.all(Radius.circular(20)),
+                    border: Border.all(color: Colors.white, width: 2)),
+                child: Text(
+                  question.question,
+                  style: TextStyle(fontWeight: FontWeight.w400, fontSize: 20),
+                ),
+              ),
+              ...question.option.asMap().entries.map((entry) {
+                int idx = entry.key;
+                String val = entry.value;
+                return ListTile(
+                  title: ElevatedButton(
+                      onPressed: () {
+                        setState(() {
+                          _selectedAnswers[_currentQuestionIndex] = idx;
+                        });
+                      },
+                      child: Text(
+                        val,
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.w400),
+                      )),
+                  leading: Radio<int>(
+                    value: idx,
+                    groupValue: _selectedAnswers[_currentQuestionIndex],
+                    onChanged: (value) {
+                      setState(() {
+                        _selectedAnswers[_currentQuestionIndex] = value;
+                      });
+                    },
+                  ),
+                );
+              }).toList(),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  ElevatedButton(
+                    onPressed: _prevQuestion,
+                    child: Text('Previous'),
+                  ),
+                  ElevatedButton(
+                    onPressed: _currentQuestionIndex == _questions.length - 1
+                        ? _submitQuiz
+                        : _nextQuestion,
+                    child: Text(_currentQuestionIndex == _questions.length - 1
+                        ? 'Submit'
+                        : 'Next'),
+                  ),
+                ],
+              ),
+              ExpansionTile(
+                title: Text('Explanation'),
+                children: [Text(question.explanation)],
+              ),
+            ],
+          ),
+        ),
+      );
+    } else {
+      return Scaffold(
+        appBar: AppBar(
+          title: Text('Quiz App'),
+        ),
+        body: Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+    }
+  }
+}

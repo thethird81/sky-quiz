@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:sky_quiz/pages/quiz_home.dart';
+import 'package:provider/provider.dart';
+import 'package:sky_quiz/helper/data_provider.dart';
+import 'package:sky_quiz/pages/flash_card_screen.dart';
+import 'package:sky_quiz/pages/quiz_screen.dart';
 
 class SystemsScreen extends StatelessWidget {
   final String aircraftType;
@@ -40,13 +43,23 @@ class SystemsScreen extends StatelessWidget {
               for (var i in systems)
                 InkWell(
                   onTap: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) =>
-                            QuizHome(aircraftType: aircraftType, system: i),
-                      ),
-                    );
-                    ;
+                    final isQuiz = Provider.of<DataProvider>(context).isQuiz;
+                    debugPrint(isQuiz.toString());
+                    if (isQuiz) {
+                      // Navigator.of(context).push(
+                      //   MaterialPageRoute(
+                      //     builder: (context) =>
+                      //         QuizScreen(aircraftType: aircraftType, system: i),
+                      //   ),
+                      // );
+                    } else {
+                      // Navigator.of(context).push(
+                      //   MaterialPageRoute(
+                      //     builder: (context) =>
+                      //         HomePage(aircraftType: aircraftType, system: i),
+                      //   ),
+                      // );
+                    }
                   },
                   child: Container(
                       padding: EdgeInsets.all(12),
