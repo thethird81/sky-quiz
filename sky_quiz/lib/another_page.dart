@@ -28,11 +28,12 @@ class GetUserName extends StatelessWidget {
           questions = snapshot.data!.docs.map((doc) {
             final List<String> options = List.from(doc['option'] as List);
             return Question(
-              question: doc['question'].toString(),
-              option: options,
-              correctAnswer: doc['correctAnswer'],
-              explanation: doc['explanation'].toString(),
-            );
+                question: doc['question'].toString(),
+                option: options,
+                correctAnswer: doc['correctAnswer'],
+                explanation: doc['explanation'].toString(),
+                difficultyLevel: doc['level'].toString(),
+                isFlashCard: doc['isFlashCard']);
           }).toList();
           //Map<String, dynamic> data = snapshot.data as Map<String, dynamic>;
           return Text(questions[0].question);

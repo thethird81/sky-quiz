@@ -21,7 +21,7 @@ class _DropdownHomeState extends State<DropdownHome> {
     'B767',
     'Q400'
   ];
-  final List<String> difficulty = [
+  final List<String> difficultyLevel = [
     'Easy',
     'Medium',
     'Difficult',
@@ -174,7 +174,7 @@ class _DropdownHomeState extends State<DropdownHome> {
                 child: Padding(
                   padding: EdgeInsets.symmetric(horizontal: 30),
                   child: DropdownButton(
-                    items: difficulty
+                    items: difficultyLevel
                         .map<DropdownMenuItem<String>>(
                           (String difficulty) => DropdownMenuItem<String>(
                             value: difficulty,
@@ -213,7 +213,7 @@ class _DropdownHomeState extends State<DropdownHome> {
                           builder: (context) => QuizScreen(
                               aircraftType: aircraftTypeValue,
                               system: systemsValue,
-                              difficulty: difficultyValue),
+                              difficultyLevel: difficultyValue),
                         ),
                       );
                     },
@@ -237,7 +237,7 @@ class _DropdownHomeState extends State<DropdownHome> {
                           builder: (context) => HomePage(
                               aircraftType: aircraftTypeValue,
                               system: systemsValue,
-                              difficulty: difficultyValue),
+                              difficultyLevel: difficultyValue),
                         ),
                       );
                     },

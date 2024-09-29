@@ -3,15 +3,16 @@ import 'package:sky_quiz/models/quiz_model.dart';
 
 class FetchQuestions {
   List<Question> _questions = [];
-  String aircraftType;
-  String system;
-  String difficultyLevel;
+  // String aircraftType;
+  // String system;
+  // String difficultyLevel;
 
-  FetchQuestions(
-      {required this.aircraftType,
-      required this.difficultyLevel,
-      required this.system});
-  Future<List<Question>> fetchQuestions() async {
+  // FetchQuestions(
+  //     {required this.aircraftType,
+  //     required this.difficultyLevel,
+  //     required this.system});
+  Future<List<Question>> fetchQuestions(
+      String aircraftType, String system) async {
     final QuerySnapshot snapshot = await FirebaseFirestore.instance
         .collection('questions')
         .where('system', isEqualTo: system)
@@ -21,11 +22,12 @@ class FetchQuestions {
     _questions = snapshot.docs.map((doc) {
       final List<String> options = List.from(doc['options'] as List);
       return Question(
-        question: doc['question'].toString(),
-        option: options,
-        correctAnswer: doc['correctAnswer'],
-        explanation: doc['explanation'].toString(),
-      );
+          question: doc['question'].toString(),
+          option: options,
+          correctAnswer: doc['correctAnswer'],
+          explanation: doc['explanation'].toString(),
+          difficultyLevel: doc['level'].toString(),
+          isFlashCard: doc['isFlashCard']);
     }).toList();
 
     return _questions;

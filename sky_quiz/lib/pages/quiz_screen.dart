@@ -7,39 +7,18 @@ import 'package:google_fonts/google_fonts.dart';
 class QuizScreen extends StatefulWidget {
   final String aircraftType;
   final String system;
-  final String difficulty;
+  final String difficultyLevel;
   const QuizScreen(
       {super.key,
       required this.aircraftType,
       required this.system,
-      required this.difficulty});
+      required this.difficultyLevel});
   @override
   _QuizScreenState createState() => _QuizScreenState();
 }
 
 class _QuizScreenState extends State<QuizScreen> {
   List<Question> _questions = [];
-  // List<Question> _questions = [
-  //   Question(
-  //     question: 'What is the capital of France?',
-  //     option: ['Berlin', 'Madrid', 'Paris', 'Lisbon'],
-  //     correctAnswer: 2,
-  //     explanation: 'Paris is the capital city of France.',
-  //   ),
-  //   Question(
-  //     question: 'What is 5 + 3?',
-  //     option: ['5', '8', '10', '15'],
-  //     correctAnswer: 1,
-  //     explanation: '5 + 3 equals 8.',
-  //   ),
-  //   Question(
-  //     question: 'What is the boiling point of water?',
-  //     option: ['90°C', '100°C', '80°C', '70°C'],
-  //     correctAnswer: 1,
-  //     explanation: 'Water boils at 100°C at sea level.',
-  //   ),
-  // ];
-
   int _currentQuestionIndex = 0;
   int _score = 0;
   List<int?> _selectedAnswers = [];
@@ -62,11 +41,12 @@ class _QuizScreenState extends State<QuizScreen> {
       _questions = snapshot.docs.map((doc) {
         final List<String> options = List.from(doc['options'] as List);
         return Question(
-          question: doc['question'].toString(),
-          option: options,
-          correctAnswer: doc['correctAnswer'],
-          explanation: doc['explanation'].toString(),
-        );
+            question: doc['question'].toString(),
+            option: options,
+            correctAnswer: doc['correctAnswer'],
+            explanation: doc['explanation'].toString(),
+            difficultyLevel: doc['level'].toString(),
+            isFlashCard: doc['isFlashCard']);
       }).toList();
       _selectedAnswers = List<int?>.filled(_questions.length, null);
     });
