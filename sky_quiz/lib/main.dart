@@ -6,6 +6,8 @@ import 'package:sky_quiz/firebase_options.dart';
 import 'package:sky_quiz/helper/data_provider.dart';
 import 'package:sky_quiz/pages/dropdown_home.dart';
 import 'package:sky_quiz/pages/home.dart';
+import 'package:sky_quiz/themes/dark_theme.dart';
+import 'package:sky_quiz/themes/light_theme.dart';
 import 'noti_home.dart';
 import 'local_notifications.dart';
 import 'another_page.dart';
@@ -45,10 +47,8 @@ class MyApp extends StatelessWidget {
         navigatorKey: navigatorKey,
         title: 'Flutter Demo',
         debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
-          useMaterial3: true,
-        ),
+        theme: lightTheme,
+        darkTheme: darkTheme,
         routes: {
           '/': (context) => DropdownHome(),
           '/another': (context) => GetUserName('CSFDtxaACF6ElFxnMvpz'),

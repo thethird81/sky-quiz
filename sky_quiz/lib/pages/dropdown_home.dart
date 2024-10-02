@@ -28,10 +28,12 @@ class _DropdownHomeState extends State<DropdownHome> {
   ];
 
   final List<String> systems = [
+    'Air System',
     'Engine',
     'Oxygen',
     'Warning system',
     'Lighting',
+    'Air Systems',
     'Landing Gear',
     'Pneumatics',
     'Aircraft General',
@@ -48,11 +50,13 @@ class _DropdownHomeState extends State<DropdownHome> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        backgroundColor: Theme.of(context).colorScheme.surface,
         appBar: AppBar(
-            title: Text('Drop Down Home'), backgroundColor: Colors.blueAccent),
+          title: Center(child: Text('HOME')),
+        ),
         body: Container(
           decoration: BoxDecoration(
-            color: const Color.fromARGB(255, 153, 181, 230),
+            color: Theme.of(context).colorScheme.primary,
             borderRadius: BorderRadius.all(Radius.circular(100)),
           ),
           margin: EdgeInsets.only(top: 30),
@@ -61,20 +65,24 @@ class _DropdownHomeState extends State<DropdownHome> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Text('Select Aircraft Type and System'),
+              Text(
+                'Select Aircraft Type and System',
+                style:
+                    TextStyle(color: Theme.of(context).colorScheme.onPrimary),
+              ),
               const SizedBox(
                 height: 50,
               ),
               DecoratedBox(
                 decoration: BoxDecoration(
-                  color: Colors.lightGreen,
+                  color: Theme.of(context).colorScheme.secondary,
                   border: Border.all(
-                      color: Colors.blueAccent,
+                      color: Theme.of(context).colorScheme.onSecondary,
                       width: 2), // More visible border
-                  borderRadius: BorderRadius.circular(50),
+                  borderRadius: BorderRadius.circular(10),
                   boxShadow: [
                     BoxShadow(
-                      color: Color.fromRGBO(0, 0, 0, 0.57),
+                      color: Theme.of(context).colorScheme.onSecondary,
                       blurRadius: 2,
                     ),
                   ],
@@ -98,11 +106,11 @@ class _DropdownHomeState extends State<DropdownHome> {
                       padding: EdgeInsets.only(left: 20),
                       child: Icon(Icons.arrow_circle_down_sharp),
                     ),
-                    iconEnabledColor: const Color.fromARGB(255, 52, 7, 7),
+                    iconEnabledColor: Theme.of(context).colorScheme.onSecondary,
                     style: TextStyle(
-                        color: const Color.fromARGB(255, 46, 6, 6),
+                        color: Theme.of(context).colorScheme.onSecondary,
                         fontSize: 20),
-                    dropdownColor: const Color.fromARGB(255, 218, 169, 169),
+                    dropdownColor: Theme.of(context).colorScheme.secondary,
                     underline: Container(),
                     isExpanded: true,
                   ),
@@ -113,14 +121,14 @@ class _DropdownHomeState extends State<DropdownHome> {
               ),
               DecoratedBox(
                 decoration: BoxDecoration(
-                  color: Colors.lightGreen,
+                  color: Theme.of(context).colorScheme.secondary,
                   border: Border.all(
-                      color: Colors.blueAccent,
+                      color: Theme.of(context).colorScheme.onSecondary,
                       width: 2), // More visible border
-                  borderRadius: BorderRadius.circular(50),
+                  borderRadius: BorderRadius.circular(10),
                   boxShadow: [
                     BoxShadow(
-                      color: Color.fromRGBO(0, 0, 0, 0.57),
+                      color: Theme.of(context).colorScheme.onSecondary,
                       blurRadius: 2,
                     ),
                   ],
@@ -144,11 +152,11 @@ class _DropdownHomeState extends State<DropdownHome> {
                       padding: EdgeInsets.only(left: 20),
                       child: Icon(Icons.arrow_circle_down_sharp),
                     ),
-                    iconEnabledColor: const Color.fromARGB(255, 52, 7, 7),
+                    iconEnabledColor: Theme.of(context).colorScheme.onSecondary,
                     style: TextStyle(
-                        color: const Color.fromARGB(255, 52, 7, 7),
+                        color: Theme.of(context).colorScheme.onSecondary,
                         fontSize: 20),
-                    dropdownColor: const Color.fromARGB(255, 205, 230, 176),
+                    dropdownColor: Theme.of(context).colorScheme.secondary,
                     underline: Container(),
                     isExpanded: true,
                   ),
@@ -159,14 +167,14 @@ class _DropdownHomeState extends State<DropdownHome> {
               ),
               DecoratedBox(
                 decoration: BoxDecoration(
-                  color: Colors.lightGreen,
+                  color: Theme.of(context).colorScheme.secondary,
                   border: Border.all(
-                      color: Colors.blueAccent,
+                      color: Theme.of(context).colorScheme.secondary,
                       width: 2), // More visible border
-                  borderRadius: BorderRadius.circular(50),
+                  borderRadius: BorderRadius.circular(10),
                   boxShadow: [
                     BoxShadow(
-                      color: Color.fromRGBO(0, 0, 0, 0.57),
+                      color: Theme.of(context).colorScheme.onSecondary,
                       blurRadius: 2,
                     ),
                   ],
@@ -190,11 +198,11 @@ class _DropdownHomeState extends State<DropdownHome> {
                       padding: EdgeInsets.only(left: 20),
                       child: Icon(Icons.arrow_circle_down_sharp),
                     ),
-                    iconEnabledColor: const Color.fromARGB(255, 52, 7, 7),
+                    iconEnabledColor: Theme.of(context).colorScheme.onSecondary,
                     style: TextStyle(
-                        color: const Color.fromARGB(255, 52, 7, 7),
+                        color: Theme.of(context).colorScheme.onSecondary,
                         fontSize: 20),
-                    dropdownColor: const Color.fromARGB(255, 205, 230, 176),
+                    dropdownColor: Theme.of(context).colorScheme.secondary,
                     underline: Container(),
                     isExpanded: true,
                   ),
@@ -219,9 +227,14 @@ class _DropdownHomeState extends State<DropdownHome> {
                     },
                     child: const Text('QUIZ'),
                     style: ElevatedButton.styleFrom(
-                        foregroundColor: Colors.white,
-                        backgroundColor: Colors.deepPurple, // Text color
-                        shadowColor: Colors.deepPurpleAccent, // Shadow color
+                        foregroundColor:
+                            Theme.of(context).colorScheme.onSecondary,
+                        backgroundColor: Theme.of(context)
+                            .colorScheme
+                            .secondary, // Text color
+                        shadowColor: Theme.of(context)
+                            .colorScheme
+                            .onSecondary, // Shadow color
                         elevation: 10, // Elevation
                         shape: RoundedRectangleBorder(
                           borderRadius:
@@ -243,9 +256,14 @@ class _DropdownHomeState extends State<DropdownHome> {
                     },
                     child: const Text('FLASH CARD'),
                     style: ElevatedButton.styleFrom(
-                        foregroundColor: Colors.white,
-                        backgroundColor: Colors.deepPurple, // Text color
-                        shadowColor: Colors.deepPurpleAccent, // Shadow color
+                        foregroundColor:
+                            Theme.of(context).colorScheme.onSecondary,
+                        backgroundColor: Theme.of(context)
+                            .colorScheme
+                            .secondary, // Text color
+                        shadowColor: Theme.of(context)
+                            .colorScheme
+                            .onSecondary, // Shadow color
                         elevation: 10, // Elevation
                         shape: RoundedRectangleBorder(
                           borderRadius:

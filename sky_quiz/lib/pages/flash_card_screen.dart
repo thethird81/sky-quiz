@@ -23,6 +23,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  GlobalKey<FlipCardState> cardKey = GlobalKey<FlipCardState>();
   FetchQuestions fetchQuestionsInstance = FetchQuestions();
   List<Question> _questions = [];
   int _currentIndexNumber = 0;
@@ -64,88 +65,125 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  Future<void> _resetCard() async {
+    if (cardKey.currentState!.isFront) {
+      // Do nothing if already on the front
+    } else {
+      await cardKey.currentState!.toggleCard(); // Flip to front
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     if (!_questions.isEmpty) {
       String value = (_currentIndexNumber + 1).toStringAsFixed(0);
       int qustionLeng = _questions.length;
       return Scaffold(
-          backgroundColor: Colors.grey.shade100,
+          backgroundColor: Theme.of(context).colorScheme.surface,
           appBar: AppBar(
-            centerTitle: true,
-            title: Text(widget.aircraftType + '/' + widget.system,
-                style: TextStyle(fontSize: 30, color: Colors.white)),
-            backgroundColor: Colors.blueAccent,
-            toolbarHeight: 80,
-            elevation: 5,
+            title: Center(
+              child: Text(
+                "FLASH CARDS",
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.onPrimary,
+                ),
+              ),
+            ),
           ),
           body: Center(
-              child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                Text("Question $value of $qustionLeng Completed",
-                    style: otherTextStyle),
-                SizedBox(height: 20),
-                Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: LinearProgressIndicator(
-                    backgroundColor: Colors.white,
-                    valueColor: AlwaysStoppedAnimation(
-                        Color.fromARGB(255, 153, 181, 230)),
-                    minHeight: 5,
-                    value: _initial,
+              child: Container(
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.primary,
+              borderRadius: BorderRadius.all(Radius.circular(50)),
+            ),
+            margin: EdgeInsets.only(top: 30),
+            padding: EdgeInsets.all(40),
+            alignment: Alignment.center,
+            child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Text("Question $value of $qustionLeng Completed",
+                      style: TextStyle(
+                        fontSize: 15,
+                        color: Theme.of(context).colorScheme.onPrimary,
+                      )),
+                  SizedBox(height: 20),
+                  Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: LinearProgressIndicator(
+                      backgroundColor: Theme.of(context).colorScheme.secondary,
+                      valueColor: AlwaysStoppedAnimation(
+                          Theme.of(context).colorScheme.onSecondary),
+                      minHeight: 5,
+                      value: _initial,
+                    ),
                   ),
-                ),
-                SizedBox(height: 25),
-                SizedBox(
-                    width: 300,
-                    height: 300,
-                    child: FlipCard(
-                        direction: FlipDirection.VERTICAL,
-                        front: ReusableCard(
-                            text: _questions[_currentIndexNumber].question),
-                        back: ReusableCard(
-                            text: _questions[_currentIndexNumber].option[
-                                _questions[_currentIndexNumber]
-                                    .correctAnswer]))),
-                Text("Tab to see Answer", style: otherTextStyle),
-                SizedBox(height: 20),
-                Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: <Widget>[
-                      ElevatedButton.icon(
-                          onPressed: () {
-                            showPreviousCard();
-                            updateToPrev();
-                          },
-                          icon: Icon(FontAwesomeIcons.handPointLeft, size: 30),
-                          label: Text(""),
-                          style: ElevatedButton.styleFrom(
-                              backgroundColor:
-                                  Color.fromARGB(255, 153, 181, 230),
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10)),
-                              padding: EdgeInsets.only(
-                                  right: 20, left: 25, top: 15, bottom: 15))),
-                      ElevatedButton.icon(
-                          onPressed: () {
-                            showNextCard();
-                            updateToNext();
-                          },
-                          icon: Icon(FontAwesomeIcons.handPointRight, size: 30),
-                          label: Text(""),
-                          style: ElevatedButton.styleFrom(
-                              backgroundColor:
-                                  Color.fromARGB(255, 153, 181, 230),
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10)),
-                              padding: EdgeInsets.only(
-                                  right: 20, left: 25, top: 15, bottom: 15)))
-                    ])
-              ])));
+                  SizedBox(height: 25),
+                  SizedBox(
+                      width: 300,
+                      height: 300,
+                      child: FlipCard(
+                          key: cardKey,
+                          direction: FlipDirection.VERTICAL,
+                          front: ReusableCard(
+                              text: _questions[_currentIndexNumber].question),
+                          back: ReusableCard(
+                              text: _questions[_currentIndexNumber].option[
+                                  _questions[_currentIndexNumber]
+                                      .correctAnswer]))),
+                  Text("Tab to see Answer",
+                      style: TextStyle(
+                          fontSize: 15,
+                          color: Theme.of(context).colorScheme.onSecondary)),
+                  SizedBox(height: 20),
+                  Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: <Widget>[
+                        ElevatedButton.icon(
+                            onPressed: () {
+                              _resetCard();
+                              showPreviousCard();
+                              updateToPrev();
+                            },
+                            icon: Icon(
+                              FontAwesomeIcons.handPointLeft,
+                              size: 30,
+                              color: Theme.of(context).colorScheme.onSecondary,
+                            ),
+                            label: Text(""),
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor:
+                                    Theme.of(context).colorScheme.secondary,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10)),
+                                padding: EdgeInsets.only(
+                                    right: 20, left: 25, top: 15, bottom: 15))),
+                        ElevatedButton.icon(
+                            onPressed: () {
+                              _resetCard();
+                              showNextCard();
+                              updateToNext();
+                            },
+                            icon: Icon(
+                              FontAwesomeIcons.handPointRight,
+                              size: 30,
+                              color: Theme.of(context).colorScheme.onSecondary,
+                            ),
+                            label: Text(""),
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor:
+                                    Theme.of(context).colorScheme.secondary,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10)),
+                                padding: EdgeInsets.only(
+                                    right: 20, left: 25, top: 15, bottom: 15)))
+                      ])
+                ]),
+          )));
     } else {
       if (isLoading)
         return Scaffold(
+          backgroundColor: Theme.of(context).colorScheme.surface,
           body: Center(
             child: CircularProgressIndicator(),
           ),
@@ -153,7 +191,11 @@ class _HomePageState extends State<HomePage> {
       else
         return Scaffold(
           body: Center(
-            child: Text('Sorry No Question Available'),
+            child: Text(
+              'Sorry No Question Available',
+              style:
+                  TextStyle(color: Theme.of(context).colorScheme.onSecondary),
+            ),
           ),
         );
     }

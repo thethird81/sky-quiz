@@ -12,12 +12,18 @@ class ReusableCard extends StatelessWidget {
       child: Card(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
         elevation: 7,
-        shadowColor: Colors.grey,
+        shadowColor: Theme.of(context).colorScheme.secondary,
         child: Padding(
           padding: const EdgeInsets.all(10.0),
           child: Center(
-            child:
-                Text(text, style: cardTextStyle, textAlign: TextAlign.center),
+            child: Text(
+              text,
+              style: TextStyle(
+                  fontSize: 20,
+                  letterSpacing: 1.0,
+                  color: Theme.of(context).colorScheme.onSecondary),
+              textAlign: TextAlign.center,
+            ),
           ),
         ),
       ),

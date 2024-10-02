@@ -151,85 +151,112 @@ class _QuizScreenState extends State<QuizScreen> {
     if (!_questions.isEmpty) {
       final question = _questions[_currentQuestionIndex];
       return Scaffold(
+        backgroundColor: Theme.of(context).colorScheme.surface,
         appBar: AppBar(
-          title: Text('Quiz App'),
-          backgroundColor: Colors.blueAccent,
-          shadowColor: const Color.fromARGB(255, 9, 0, 2),
-          elevation: 7,
+          title: Center(child: Text('Questions')),
         ),
-        body: Container(
-          alignment: Alignment.center,
-          padding: EdgeInsets.only(left: 20, right: 20, top: 50),
-          decoration: BoxDecoration(
-              color: const Color.fromARGB(255, 195, 207, 228),
-              borderRadius: BorderRadius.only(topLeft: Radius.circular(100))),
-          child: Column(
-            children: [
-              Text(
-                (_currentQuestionIndex + 1).toString() +
-                    '/' +
-                    _questions.length.toString(),
-                style: TextStyle(fontWeight: FontWeight.w400, fontSize: 20),
-              ),
-              Container(
-                padding: EdgeInsets.all(5),
-                decoration: BoxDecoration(
-                    color: Colors.transparent,
-                    borderRadius: BorderRadius.all(Radius.circular(20)),
-                    border: Border.all(color: Colors.white, width: 2)),
-                child: Text(
-                  question.question,
+        body: SingleChildScrollView(
+          child: Container(
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.primary,
+              borderRadius: BorderRadius.all(Radius.circular(50)),
+            ),
+            margin: EdgeInsets.only(top: 30),
+            padding: EdgeInsets.all(40),
+            alignment: Alignment.center,
+            child: Column(
+              children: [
+                Text(
+                  (_currentQuestionIndex + 1).toString() +
+                      '/' +
+                      _questions.length.toString(),
                   style: TextStyle(fontWeight: FontWeight.w400, fontSize: 20),
                 ),
-              ),
-              ...question.option.asMap().entries.map((entry) {
-                int idx = entry.key;
-                String val = entry.value;
-                return ListTile(
-                  title: ElevatedButton(
-                      onPressed: () {
+                Container(
+                  padding: EdgeInsets.all(5),
+                  decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.secondary,
+                      borderRadius: BorderRadius.all(Radius.circular(20)),
+                      border: Border.all(
+                          color: Theme.of(context).colorScheme.onSecondary,
+                          width: 2)),
+                  child: Text(
+                    question.question,
+                    style: TextStyle(
+                        fontWeight: FontWeight.w400,
+                        fontSize: 20,
+                        color: Theme.of(context).colorScheme.onSecondary),
+                  ),
+                ),
+                ...question.option.asMap().entries.map((entry) {
+                  int idx = entry.key;
+                  String val = entry.value;
+                  return ListTile(
+                    title: ElevatedButton(
+                        onPressed: () {
+                          setState(() {
+                            _selectedAnswers[_currentQuestionIndex] = idx;
+                          });
+                        },
+                        child: Text(
+                          val,
+                          style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w400,
+                              color: Theme.of(context).colorScheme.onSecondary),
+                        )),
+                    leading: Radio<int>(
+                      value: idx,
+                      groupValue: _selectedAnswers[_currentQuestionIndex],
+                      onChanged: (value) {
                         setState(() {
-                          _selectedAnswers[_currentQuestionIndex] = idx;
+                          _selectedAnswers[_currentQuestionIndex] = value;
                         });
                       },
+                    ),
+                  );
+                }).toList(),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    ElevatedButton(
+                      onPressed: _prevQuestion,
                       child: Text(
-                        val,
+                        'Previous',
                         style: TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.w400),
-                      )),
-                  leading: Radio<int>(
-                    value: idx,
-                    groupValue: _selectedAnswers[_currentQuestionIndex],
-                    onChanged: (value) {
-                      setState(() {
-                        _selectedAnswers[_currentQuestionIndex] = value;
-                      });
-                    },
+                            color: Theme.of(context).colorScheme.onSecondary),
+                      ),
+                    ),
+                    ElevatedButton(
+                      onPressed: _currentQuestionIndex == _questions.length - 1
+                          ? _submitQuiz
+                          : _nextQuestion,
+                      child: Text(
+                        _currentQuestionIndex == _questions.length - 1
+                            ? 'Submit'
+                            : 'Next',
+                        style: TextStyle(
+                            color: Theme.of(context).colorScheme.onSecondary),
+                      ),
+                    ),
+                  ],
+                ),
+                ExpansionTile(
+                  title: Text(
+                    'Explanation',
+                    style: TextStyle(
+                        color: Theme.of(context).colorScheme.onSecondary),
                   ),
-                );
-              }).toList(),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  ElevatedButton(
-                    onPressed: _prevQuestion,
-                    child: Text('Previous'),
-                  ),
-                  ElevatedButton(
-                    onPressed: _currentQuestionIndex == _questions.length - 1
-                        ? _submitQuiz
-                        : _nextQuestion,
-                    child: Text(_currentQuestionIndex == _questions.length - 1
-                        ? 'Submit'
-                        : 'Next'),
-                  ),
-                ],
-              ),
-              ExpansionTile(
-                title: Text('Explanation'),
-                children: [Text(question.explanation)],
-              ),
-            ],
+                  children: [
+                    Text(
+                      question.explanation,
+                      style: TextStyle(
+                          color: Theme.of(context).colorScheme.onSecondary),
+                    )
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       );
